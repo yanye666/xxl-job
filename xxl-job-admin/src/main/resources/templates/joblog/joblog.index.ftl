@@ -26,6 +26,14 @@
 		<!-- Main content -->
 	    <section class="content">
 	    	<div class="row">
+
+                <div class="col-xs-2">
+                    <div class="input-group">
+                        <span class="input-group-addon">${I18n.joblog_logid}</span>
+                        <input type="number" class="form-control" id="logId" placeholder="${I18n.system_please_input}${I18n.joblog_logid}" >
+                    </div>
+                </div>
+
 	    		<div class="col-xs-2">
  					<div class="input-group">
 	                	<span class="input-group-addon">${I18n.jobinfo_field_jobgroup}</span>
@@ -87,6 +95,8 @@
 				                <thead>
 					            	<tr>
                                         <th name="jobId" >${I18n.jobinfo_field_id}</th>
+                                        <th name="executorHandler" >${I18n.jobinfo_field_executorHandler}</th>
+                                        <th name="jobdesc" >${I18n.jobinfo_field_jobdesc}</th>
                                         <th name="jobGroup" >jobGroup</th>
 										<#--<th name="executorAddress" >执行器地址</th>
 										<th name="glueType" >运行模式</th>

@@ -173,6 +173,15 @@
 		WHERE t.id = #{id}
 	</select>
 
+	<select id="loadByIds" parameterType="java.util.HashMap" resultMap="XxlJobInfo">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_job_info AS t
+		WHERE t.id in
+		<foreach collection="ids" item="item" separator="," open="(" close=")" >
+			#{item}
+		</foreach>
+	</select>
+
 	<update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobInfo" >
 		UPDATE xxl_job_info
 		SET

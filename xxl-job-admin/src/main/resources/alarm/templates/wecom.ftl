@@ -6,7 +6,7 @@
 > 执行器:<font color=\"comment\">${jobGroup.appname}</font>
 > 任务:<font color=\"comment\">${jobInfo.executorHandler}</font>
 > 任务描述:<font color=\"comment\">${jobInfo.jobDesc}</font>
-> <font color=\"comment\">[点击查看](${domain}/joblog?id=${jobInfo.id})</font>
+> <font color=\"comment\">[点击查看](${domain}/joblog?logId=${jobInfo.id})</font>
 "
 }
 

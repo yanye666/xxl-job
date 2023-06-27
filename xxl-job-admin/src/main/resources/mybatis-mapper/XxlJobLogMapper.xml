@@ -54,6 +54,9 @@
 			<if test="jobId gt 0">
 				AND t.job_id = #{jobId}
 			</if>
+			<if test="logId != null">
+				AND t.id = #{logId}
+			</if>
 			<if test="triggerTimeStart != null">
 				AND t.trigger_time <![CDATA[ >= ]]> #{triggerTimeStart}
 			</if>
@@ -87,6 +90,9 @@
 			</if>
 			<if test="jobId gt 0">
 				AND t.job_id = #{jobId}
+			</if>
+			<if test="logId != null">
+				AND t.id = #{logId}
 			</if>
 			<if test="triggerTimeStart != null">
 				AND t.trigger_time <![CDATA[ >= ]]> #{triggerTimeStart}

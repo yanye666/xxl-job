@@ -1,5 +1,8 @@
 $(function() {
-
+	var logId = getUrlParameter("logId");
+	if(logId){
+		$("#logId").val(logId);
+	}
 	// jobGroup change, job list init and select
 	$("#jobGroup").on("change", function () {
 		var jobGroup = $(this).children('option:selected').val();
@@ -81,6 +84,7 @@ $(function() {
 	        	var obj = {};
 	        	obj.jobGroup = $('#jobGroup').val();
 	        	obj.jobId = $('#jobId').val();
+	        	obj.logId = $('#logId').val();
                 obj.logStatus = $('#logStatus').val();
 				obj.filterTime = $('#filterTime').val();
 	        	obj.start = d.start;
@@ -95,7 +99,7 @@ $(function() {
 					{
 						"data": 'jobId',
 						"visible" : true,
-                        "width":'10%',
+                        "width":'5%',
 						"render": function ( data, type, row ) {
 
 							var jobhandler = '';
@@ -111,17 +115,19 @@ $(function() {
 							return '<a class="logTips" href="javascript:;" >'+ row.jobId +'<span style="display:none;">'+ temp +'</span></a>';
 						}
 					},
-					{ "data": 'jobGroup', "visible" : false},
+					{"data": 'executorHandler', "width": '15%', "visible": true},
+					{"data": 'jobDesc', "width": '20%', "visible": true},
+					{"data": 'jobGroup', "visible": false},
 					{
 						"data": 'triggerTime',
-                        "width":'20%',
+                        "width":'10%',
 						"render": function ( data, type, row ) {
 							return data?moment(data).format("YYYY-MM-DD HH:mm:ss"):"";
 						}
 					},
 					{
 						"data": 'triggerCode',
-                        "width":'10%',
+                        "width":'5%',
 						"render": function ( data, type, row ) {
 							var html = data;
 							if (data == 200) {
@@ -143,14 +149,14 @@ $(function() {
 					},
 	                { 
 	                	"data": 'handleTime',
-                        "width":'20%',
+                        "width":'10%',
 	                	"render": function ( data, type, row ) {
 	                		return data?moment(data).format("YYYY-MM-DD HH:mm:ss"):"";
 	                	}
 	                },
 	                {
 						"data": 'handleCode',
-                        "width":'10%',
+                        "width":'5%',
 						"render": function ( data, type, row ) {
                             var html = data;
                             if (data == 200) {
