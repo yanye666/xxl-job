@@ -32,6 +32,9 @@ public class JobAlarmMessageConverter implements ApplicationContextAware {
     @Value("${alarm.message.template:classpath:alarm/templates}")
     private String templatePath;
 
+    @Value("${domain:''}")
+    private String domain;
+
     private Configuration configuration;
 
     public void init(ApplicationContext applicationContext) {
@@ -51,6 +54,7 @@ public class JobAlarmMessageConverter implements ApplicationContextAware {
         data.put("jobInfo", jobInfo);
         data.put("jobLog", jobLog);
         data.put("alarmConfig", config);
+        data.put("domain", domain);
         data.put("i18n", I18nUtil.loadI18nProp());
         StringWriter writer = new StringWriter();
         template.process(data, writer);

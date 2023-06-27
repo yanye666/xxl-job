@@ -33,10 +33,10 @@
 	</delete>
 
 	<insert id="batchSave" parameterType="java.util.List">
-		INSERT INTO xxl_job_alarm (id, job_id, alarm_type, alarm_target, alarm_config)
+		INSERT INTO xxl_job_alarm (job_id, alarm_type, alarm_target, alarm_config)
 		VALUES
 		<foreach collection="dataList" item="item" separator=",">
-			(null, #{item.jobId}, #{item.alarmType}, #{item.alarmTarget}, #{item.alarmConfig})
+			(#{item.jobId}, #{item.alarmType}, #{item.alarmTarget}, #{item.alarmConfig})
 		</foreach>
 	</insert>
 </mapper>
