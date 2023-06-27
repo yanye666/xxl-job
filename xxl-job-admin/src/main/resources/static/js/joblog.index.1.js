@@ -68,8 +68,8 @@ $(function() {
             monthNames : I18n.daterangepicker_custom_monthnames.split(',') ,        // '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'
             firstDay : 1
         },
-        startDate: rangesConf[I18n.daterangepicker_ranges_today][0],
-        endDate: rangesConf[I18n.daterangepicker_ranges_today][1]
+        startDate: logId?rangesConf[I18n.daterangepicker_ranges_recent_week][0]:rangesConf[I18n.daterangepicker_ranges_today][0],
+        endDate: logId?rangesConf[I18n.daterangepicker_ranges_recent_week][1]:rangesConf[I18n.daterangepicker_ranges_today][1]
 	});
 
 	// init date tables
