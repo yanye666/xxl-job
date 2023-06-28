@@ -1,5 +1,6 @@
 package com.xxl.job.admin.dao;
 
+import com.xxl.job.admin.core.dto.XxlJobStatisticDTO;
 import com.xxl.job.admin.core.model.XxlJobLog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -51,6 +52,7 @@ public interface XxlJobLogDao {
 									  @Param("clearBeforeTime") Date clearBeforeTime,
 									  @Param("clearBeforeNum") int clearBeforeNum,
 									  @Param("pagesize") int pagesize);
+
 	public int clearLog(@Param("logIds") List<Long> logIds);
 
 	public List<Long> findFailJobLogIds(@Param("pagesize") int pagesize);
@@ -60,5 +62,19 @@ public interface XxlJobLogDao {
 								 @Param("newAlarmStatus") int newAlarmStatus);
 
 	public List<Long> findLostJobIds(@Param("losedTime") Date losedTime);
+
+	public int pageLogStatisticCount(@Param("offset") int offset,
+									 @Param("pagesize") int pagesize,
+									 @Param("jobGroup") int jobGroup,
+									 @Param("jobId") int jobId,
+									 @Param("triggerTimeStart") Date triggerTimeStart,
+									 @Param("triggerTimeEnd") Date triggerTimeEnd);
+
+	public List<XxlJobStatisticDTO> pageLogStatistic(@Param("offset") int offset,
+													 @Param("pagesize") int pagesize,
+													 @Param("jobGroup") int jobGroup,
+													 @Param("jobId") int jobId,
+													 @Param("triggerTimeStart") Date triggerTimeStart,
+													 @Param("triggerTimeEnd") Date triggerTimeEnd);
 
 }
