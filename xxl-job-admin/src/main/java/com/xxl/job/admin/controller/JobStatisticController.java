@@ -110,49 +110,4 @@ public class JobStatisticController {
 		return maps;
 	}
 
-	@RequestMapping("/logDetailPage")
-	public String logDetailPage(int id, Model model){
-
-		// base check
-		ReturnT<String> logStatue = ReturnT.SUCCESS;
-		XxlJobLog jobLog = xxlJobLogDao.load(id);
-		if (jobLog == null) {
-            throw new RuntimeException(I18nUtil.getString("joblog_logid_unvalid"));
-		}
-
-        model.addAttribute("triggerCode", jobLog.getTriggerCode());
-        model.addAttribute("handleCode", jobLog.getHandleCode());
-        model.addAttribute("logId", jobLog.getId());
-		return "joblog/joblog.detail";
-	}
-
-	@RequestMapping("/logDetailCat")
-	@ResponseBody
-	public ReturnT<LogResult> logDetailCat(long logId, int fromLineNum){
-		try {
-			// valid
-			XxlJobLog jobLog = xxlJobLogDao.load(logId);	// todo, need to improve performance
-			if (jobLog == null) {
-				return new ReturnT<LogResult>(ReturnT.FAIL_CODE, I18nUtil.getString("joblog_logid_unvalid"));
-			}
-
-			// log cat
-			ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(jobLog.getExecutorAddress());
-			ReturnT<LogResult> logResult = executorBiz.log(new LogParam(jobLog.getTriggerTime().getTime(), logId, fromLineNum));
-
-			// is end
-            if (logResult.getContent()!=null && logResult.getContent().getFromLineNum() > logResult.getContent().getToLineNum()) {
-                if (jobLog.getHandleCode() > 0) {
-                    logResult.getContent().setEnd(true);
-                }
-            }
-
-			return logResult;
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return new ReturnT<LogResult>(ReturnT.FAIL_CODE, e.getMessage());
-		}
-	}
-
-
 }
