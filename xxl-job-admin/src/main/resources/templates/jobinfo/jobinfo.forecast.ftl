@@ -16,7 +16,7 @@
     <!-- header -->
     <@netCommon.commonHeader />
     <!-- left -->
-    <@netCommon.commonLeft "jobStatistic" />
+    <@netCommon.commonLeft "jobForecast" />
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -42,14 +42,6 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xs-2">
-                    <div class="input-group">
-                        <span class="input-group-addon">${I18n.jobinfo_job}</span>
-                        <select class="form-control" id="jobId" paramVal="<#if jobInfo?exists>${jobInfo.id}</#if>">
-                            <option value="0">${I18n.system_all}</option>
-                        </select>
-                    </div>
-                </div>
 
                 <div class="col-xs-4">
                     <div class="input-group">
@@ -70,22 +62,16 @@
                     <div class="box">
                         <#--<div class="box-header hide"><h3 class="box-title">调度日志</h3></div>-->
                         <div class="box-body">
-                            <table id="job_statistic_list" class="table table-bordered table-striped display" width="100%">
+                            <table id="job_forecast_list" class="table table-bordered table-striped display"
+                                   width="100%">
                                 <thead>
                                 <tr>
-                                    <th name="jobId">任务ID</th>
+                                    <th name="id">任务ID</th>
                                     <th name="executorHandler">执行器</th>
                                     <th name="jobDesc">任务描述</th>
                                     <th name="totalCount">总数量</th>
-                                    <th name="successCount">成功数</th>
-                                    <th name="errorCount">失败数</th>
-                                    <th name="triggerSuccessCount">调度成功数</th>
-                                    <th name="triggerErrorCount">调度失败数</th>
-                                    <th name="handleSuccessCount">执行成功数</th>
-                                    <th name="handleErrorCount">执行失败数</th>
-                                    <th name="maxHandleSecond">最大耗时(s)</th>
-                                    <th name="minHandleSecond">最小耗时(s)</th>
-                                    <th name="avgHandleSecond">平均耗时(s)</th>
+                                    <th name="firstTime">第一次调度时间</th>
+                                    <th name="lastTime">最后一次调度时间</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -107,6 +93,6 @@
 <!-- daterangepicker -->
 <script src="${request.contextPath}/static/adminlte/bower_components/moment/moment.min.js"></script>
 <script src="${request.contextPath}/static/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-<script src="${request.contextPath}/static/js/joblog.statistic.1.js"></script>
+<script src="${request.contextPath}/static/js/joblog.forecast.1.js"></script>
 </body>
 </html>

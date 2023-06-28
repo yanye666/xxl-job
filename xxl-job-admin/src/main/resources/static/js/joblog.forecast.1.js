@@ -69,12 +69,12 @@ $(function () {
 	});
 
 	// init date tables
-	var logTable = $("#job_statistic_list").dataTable({
+	var logTable = $("#job_forecast_list").dataTable({
 		"deferRender": true,
 		"processing": true,
 		"serverSide": true,
 		"ajax": {
-			url: base_url + "/jobStatistic/pageList",
+			url: base_url + "/jobForecast/pageList",
 			type: "post",
 			data: function (d) {
 				var obj = {};
@@ -92,19 +92,24 @@ $(function () {
 		"ordering": false,
 		//"scrollX": false,
 		"columns": [
-			{"data": 'jobId', "width": '5%', "visible": true},
+			{"data": 'id', "width": '5%', "visible": true},
 			{"data": 'executorHandler', "width": '10%', "visible": true},
 			{"data": 'jobDesc', "width": '10%', "visible": true},
 			{"data": 'totalCount', "width": '7%', "visible": true},
-			{"data": 'successCount', "width": '7%', "visible": true},
-			{"data": 'errorCount', "width": '7%', "visible": true},
-			{"data": 'triggerSuccessCount', "width": '7%', "visible": true},
-			{"data": 'triggerErrorCount', "width": '7%', "visible": true},
-			{"data": 'handleSuccessCount', "width": '7%', "visible": true},
-			{"data": 'handleErrorCount', "width": '7%', "visible": true},
-			{"data": 'maxHandleSecond', "width": '5%', "visible": true},
-			{"data": 'minHandleSecond', "width": '5%', "visible": true},
-			{"data": 'avgHandleSecond', "width": '5%', "visible": true}
+			{
+				"data": 'firstTime',
+				"width":'10%',
+				"render": function ( data, type, row ) {
+					return data?moment(data).format("YYYY-MM-DD HH:mm:ss"):"";
+				}
+			},
+			{
+				"data": 'lastTime',
+				"width":'10%',
+				"render": function ( data, type, row ) {
+					return data?moment(data).format("YYYY-MM-DD HH:mm:ss"):"";
+				}
+			},
 
 		],
 		"language": {
@@ -143,4 +148,3 @@ $(function () {
 		logTable.fnDraw();
 	});
 });
-
