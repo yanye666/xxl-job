@@ -10,6 +10,16 @@ public class XxlJobLogDTO extends XxlJobLog {
 
     private String jobDesc;
 
+    private Long handleSecond;
+
+    public Long getHandleSecond() {
+        return handleSecond;
+    }
+
+    public void setHandleSecond(Long handleSecond) {
+        this.handleSecond = handleSecond;
+    }
+
     public String getJobDesc() {
         return jobDesc;
     }

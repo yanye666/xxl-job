@@ -115,8 +115,8 @@ $(function() {
 							return '<a class="logTips" href="javascript:;" >'+ row.jobId +'<span style="display:none;">'+ temp +'</span></a>';
 						}
 					},
-					{"data": 'executorHandler', "width": '15%', "visible": true},
-					{"data": 'jobDesc', "width": '20%', "visible": true},
+					{"data": 'executorHandler', "width": '10%', "visible": true},
+					{"data": 'jobDesc', "width": '15%', "visible": true},
 					{"data": 'jobGroup', "visible": false},
 					{
 						"data": 'triggerTime',
@@ -171,7 +171,8 @@ $(function() {
                             return html;
 						}
 	                },
-	                { 
+					{"data": 'handleSecond', "width": '5%', "visible": true},
+					{
 	                	"data": 'handleMsg',
                         "width":'10%',
 	                	"render": function ( data, type, row ) {

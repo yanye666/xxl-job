@@ -106,6 +106,7 @@
                                         <th name="triggerMsg" >${I18n.joblog_field_triggerMsg}</th>
 					                  	<th name="handleTime" >${I18n.joblog_field_handleTime}</th>
 					                  	<th name="handleCode" >${I18n.joblog_field_handleCode}</th>
+					                  	<th name="handleSecond">${I18n.joblog_field_handleSecond}</th>
 					                  	<th name="handleMsg" >${I18n.joblog_field_handleMsg}</th>
 					                  	<th name="handleMsg" >${I18n.system_opt}</th>
 					                </tr>

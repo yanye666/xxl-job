@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -120,6 +121,7 @@ public class JobLogController {
 			List<XxlJobLogDTO> collect = list.stream().map(xxlJobLog -> {
 				XxlJobLogDTO xxlJobLogDTO = new XxlJobLogDTO();
 				BeanUtils.copyProperties(xxlJobLog, xxlJobLogDTO);
+				xxlJobLogDTO.setHandleSecond(xxlJobLog.getHandleTime() == null ? null : Duration.between(xxlJobLog.getTriggerTime().toInstant(), xxlJobLog.getHandleTime().toInstant()).getSeconds());
 				Optional.ofNullable(jobMap.get(xxlJobLog.getJobId())).ifPresent(xxlJobInfo -> {
 					xxlJobLogDTO.setJobDesc(xxlJobInfo.getJobDesc());
 				});
