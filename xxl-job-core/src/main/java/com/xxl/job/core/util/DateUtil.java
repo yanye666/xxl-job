@@ -23,6 +23,7 @@ public class DateUtil {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATETIME_H_FORMAT = "yyyy-MM-dd HH";
 
     private static final ThreadLocal<Map<String, DateFormat>> dateFormatThreadLocal = new ThreadLocal<Map<String, DateFormat>>();
     private static DateFormat getDateFormat(String pattern) {
@@ -66,6 +67,10 @@ public class DateUtil {
      */
     public static String formatDateTime(Date date) {
         return format(date, DATETIME_FORMAT);
+    }
+
+    public static String formatDateHourTime(Date date) {
+        return format(date, DATETIME_H_FORMAT);
     }
 
     /**

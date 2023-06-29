@@ -2,6 +2,7 @@ package com.xxl.job.admin.controller;
 
 import com.xxl.job.admin.core.cron.CronExpression;
 import com.xxl.job.admin.core.dto.XxlJobForecastDTO;
+import com.xxl.job.admin.core.dto.XxlJobStatisticDTO;
 import com.xxl.job.admin.core.exception.XxlJobException;
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
@@ -9,13 +10,17 @@ import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.dao.XxlJobGroupDao;
 import com.xxl.job.admin.dao.XxlJobInfoDao;
 import com.xxl.job.admin.dao.XxlJobLogDao;
+import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +28,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +47,8 @@ public class JobForecastController {
 	private XxlJobGroupDao xxlJobGroupDao;
 	@Resource
 	public XxlJobInfoDao xxlJobInfoDao;
+	@Resource
+	public XxlJobLogDao xxlJobLogDao;
 
 	@RequestMapping
 	public String index(HttpServletRequest request, Model model, @RequestParam(required = false, defaultValue = "0") Integer jobId) {
@@ -60,6 +69,7 @@ public class JobForecastController {
 	public Map<String, Object> pageList(HttpServletRequest request,
 										@RequestParam(required = false, defaultValue = "0") int start,
 										@RequestParam(required = false, defaultValue = "10") int length,
+										Integer excludeGtCount,
 										int jobGroup, @RequestParam(required = false) Integer logId, String filterTime) {
 		// valid permission
 		JobInfoController.validPermission(request, jobGroup);    // 仅管理员支持查询全部；普通用户仅支持查询有权限的 jobGroup
@@ -80,8 +90,8 @@ public class JobForecastController {
 			triggerTimeEnd = null;
 			triggerTimeStart = null;
 		}
-		int list_count = xxlJobInfoDao.pageListCount(start, length, jobGroup, 0, null, null, null);
-		List<XxlJobInfo> list = xxlJobInfoDao.pageList(start, length, jobGroup, 0, null, null, null);
+		int list_count = xxlJobInfoDao.pageListCount(start, length, jobGroup, 1, null, null, null);
+		List<XxlJobInfo> list = xxlJobInfoDao.pageList(start, length, jobGroup, 1, null, null, null);
 
 		// package result
 		Map<String, Object> maps = new HashMap<String, Object>();
@@ -89,15 +99,19 @@ public class JobForecastController {
 		maps.put("recordsFiltered", list_count);    // 过滤后的总记录数
 		maps.put("data", list);                    // 分页列表
 		if (!list.isEmpty()) {
-			List<XxlJobForecastDTO> collect = list.stream().map(xxlJobInfo -> {
+			List<XxlJobForecastDTO> collect = new ArrayList<>();
+			for (XxlJobInfo xxlJobInfo : list) {
 				XxlJobForecastDTO xxlJobForecastDTO = new XxlJobForecastDTO();
 				BeanUtils.copyProperties(xxlJobInfo, xxlJobForecastDTO);
 				List<Date> nextValidTimeAfter = getNextValidTimeAfter(xxlJobInfo.getScheduleConf(), triggerTimeStart, triggerTimeEnd);
+				if (excludeGtCount != null && nextValidTimeAfter.size() > excludeGtCount) {
+					continue;
+				}
 				xxlJobForecastDTO.setTotalCount(nextValidTimeAfter.size());
 				xxlJobForecastDTO.setFirstTime(CollectionUtils.firstElement(nextValidTimeAfter));
 				xxlJobForecastDTO.setLastTime(CollectionUtils.lastElement(nextValidTimeAfter));
-				return xxlJobForecastDTO;
-			}).collect(Collectors.toList());
+				collect.add(xxlJobForecastDTO);
+			}
 			collect.sort(Comparator.comparing(XxlJobForecastDTO::getTotalCount).reversed());
 			maps.put("data", collect);
 		}
@@ -125,4 +139,56 @@ public class JobForecastController {
 		}
 		return list;
 	}
+
+	@RequestMapping("/chartInfo")
+	@ResponseBody
+	public ReturnT<Map<String, Object>> chartInfo(Integer jobGroup, Integer excludeGtCount, Date startDate, Date endDate) {
+		// process
+		List<String> triggerHourList = new ArrayList<String>();
+		List<Integer> triggerCountList = new ArrayList<Integer>();
+		List<Integer> handleSecondList = new ArrayList<Integer>();
+		Date time = startDate;
+		while (time.compareTo(endDate) <= 0) {
+			triggerHourList.add(DateUtil.formatDateHourTime(time));
+			time = DateUtil.addHours(time, 1);
+		}
+		HashMap<String, Integer> map = new HashMap<>();
+		HashMap<String, Integer> mapSecond = new HashMap<>();
+		triggerHourList = triggerHourList.stream().distinct().collect(Collectors.toList());
+		List<XxlJobInfo> list = xxlJobInfoDao.pageList(0, Integer.MAX_VALUE, jobGroup, 1, null, null, null);
+		if (!list.isEmpty()) {
+			Map<Integer, XxlJobStatisticDTO> statisticMap = xxlJobLogDao.pageLogStatistic(0, Integer.MAX_VALUE, jobGroup, 0, DateUtil.addDays(endDate, -3), endDate)
+					.stream().collect(Collectors.toMap(XxlJobStatisticDTO::getJobId, Function.identity()));
+
+			for (XxlJobInfo xxlJobInfo : list) {
+				List<Date> nextValidTimeAfter = getNextValidTimeAfter(xxlJobInfo.getScheduleConf(), startDate, endDate);
+				if (excludeGtCount != null && nextValidTimeAfter.size() > excludeGtCount) {
+					continue;
+				}
+				for (Date date : nextValidTimeAfter) {
+					String key = DateUtil.formatDateHourTime(date);
+					Integer avgHandleSecond = Optional.ofNullable(statisticMap.get(xxlJobInfo.getId())).map(XxlJobStatisticDTO::getAvgHandleSecond).orElse(0);
+					mapSecond.put(key, mapSecond.getOrDefault(key, 0) + avgHandleSecond);
+					map.put(key, map.getOrDefault(key, 0) + 1);
+				}
+			}
+		}
+		for (String s : triggerHourList) {
+			triggerCountList.add(map.getOrDefault(s, 0));
+			handleSecondList.add(mapSecond.getOrDefault(s, 0));
+		}
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("triggerHourList", triggerHourList);
+		result.put("triggerCountList", triggerCountList);
+		result.put("handleSecondList", handleSecondList);
+		return new ReturnT<>(result);
+	}
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		dateFormat.setLenient(false);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}
+
 }

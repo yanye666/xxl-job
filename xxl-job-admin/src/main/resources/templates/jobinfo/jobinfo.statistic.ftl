@@ -12,6 +12,7 @@
     <title>${I18n.admin_name}</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && cookieMap["xxljob_adminlte_settings"]?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if> ">
+
 <div class="wrapper">
     <!-- header -->
     <@netCommon.commonHeader />
@@ -22,7 +23,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>${I18n.joblog_name}</h1>
+            <h1>${I18n.jobinfo_statistic_name}</h1>
         </section>
 
         <!-- Main content -->
@@ -111,4 +112,5 @@
 <script src="${request.contextPath}/static/adminlte/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="${request.contextPath}/static/js/joblog.statistic.1.js"></script>
 </body>
+
 </html>

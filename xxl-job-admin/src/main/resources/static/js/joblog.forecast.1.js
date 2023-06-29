@@ -67,12 +67,14 @@ $(function () {
 		startDate: rangesConf[I18n.daterangepicker_ranges_today][0],
 		endDate: rangesConf[I18n.daterangepicker_ranges_today][1]
 	});
+	freshChartDate(rangesConf[I18n.daterangepicker_ranges_today][0].format('YYYY-MM-DD HH:mm:ss'), rangesConf[I18n.daterangepicker_ranges_today][1].format('YYYY-MM-DD HH:mm:ss'));
 
 	// init date tables
 	var logTable = $("#job_forecast_list").dataTable({
 		"deferRender": true,
 		"processing": true,
 		"serverSide": true,
+		"pageLength": 100,  // 设置默认分页大小为10
 		"ajax": {
 			url: base_url + "/jobForecast/pageList",
 			type: "post",
@@ -81,6 +83,7 @@ $(function () {
 				obj.jobGroup = $('#jobGroup').val();
 				obj.jobId = $('#jobId').val();
 				obj.logId = $('#logId').val();
+				obj.excludeGtCount = $('#excludeGtCount').val();
 				obj.logStatus = $('#logStatus').val();
 				obj.filterTime = $('#filterTime').val();
 				obj.start = d.start;
@@ -158,5 +161,105 @@ $(function () {
 	// search Btn
 	$('#searchBtn').on('click', function () {
 		logTable.fnDraw();
+		let [value1, value2] = $('#filterTime').val().split(" - ");
+		freshChartDate(value1, value2);
 	});
+
+	function freshChartDate(startDate, endDate) {
+		$.ajax({
+			type: 'POST',
+			url: base_url + '/jobForecast/chartInfo',
+			data: {
+				'startDate': startDate,
+				'endDate': endDate,
+				'jobGroup': $('#jobGroup').val(),
+				'excludeGtCount': $('#excludeGtCount').val()
+			},
+			dataType: "json",
+			success: function (data) {
+				if (data.code == 200) {
+					lineChartInit(data)
+				} else {
+					layer.open({
+						title: I18n.system_tips,
+						btn: [I18n.system_ok],
+						content: (data.msg || I18n.job_dashboard_report_loaddata_fail),
+						icon: '2'
+					});
+				}
+			}
+		});
+	}
+
+	/**
+	 * line Chart Init
+	 */
+	function lineChartInit(data) {
+		var option = {
+			title: {
+				text: I18n.job_dashboard_date_report
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'cross',
+					label: {
+						backgroundColor: '#6a7985'
+					}
+				}
+			},
+			legend: {
+				data: ["预测任务调度次数", "近三日累计平均耗时(s)"]
+			},
+			toolbox: {
+				feature: {
+					/*saveAsImage: {}*/
+				}
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: [
+				{
+					type: 'category',
+					boundaryGap: false,
+					data: data.content.triggerHourList
+				}
+			],
+			yAxis: [
+				{
+					type: 'value'
+				}
+			],
+			series: [
+				{
+					name: "预测任务调度次数",
+					type: 'line',
+					stack: 'Total',
+					areaStyle: {normal: {}},
+					data: data.content.triggerCountList
+				},
+				{
+					name: "近三日累计平均耗时(s)",
+					type: 'line',
+					stack: 'Total',
+					label: {
+						normal: {
+							show: true,
+							position: 'top'
+						}
+					},
+					areaStyle: {normal: {}},
+					data: data.content.handleSecondList
+				}
+			],
+			color: ['#00A65A', '#c23632', '#F39C12']
+		};
+
+		var lineChart = echarts.init(document.getElementById('lineChart'));
+		lineChart.setOption(option);
+	}
 });
