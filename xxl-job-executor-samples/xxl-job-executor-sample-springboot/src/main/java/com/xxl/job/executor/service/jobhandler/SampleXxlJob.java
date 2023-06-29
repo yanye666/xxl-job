@@ -39,6 +39,10 @@ public class SampleXxlJob {
         XxlJobHelper.log("XXL-JOB, Hello World.");
 
         for (int i = 0; i < 5; i++) {
+            if (i == 0) {
+                throw new SecurityException("1111");
+
+            }
             XxlJobHelper.log("beat at:" + i);
             TimeUnit.SECONDS.sleep(2);
         }

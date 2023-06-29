@@ -67,6 +67,7 @@
                                 <thead>
                                 <tr>
                                     <th name="id">任务ID</th>
+                                    <th name="scheduleType">调度类型</th>
                                     <th name="executorHandler">执行器</th>
                                     <th name="jobDesc">任务描述</th>
                                     <th name="totalCount">总数量</th>

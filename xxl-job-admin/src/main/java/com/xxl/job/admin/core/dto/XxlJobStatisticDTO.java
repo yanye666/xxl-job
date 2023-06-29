@@ -7,10 +7,13 @@ package com.xxl.job.admin.core.dto;
 public class XxlJobStatisticDTO {
 
     private Integer jobId;
+    private String scheduleType;
+    private String scheduleConf;
     private String executorHandler;
     private String jobDesc;
     private Integer totalCount;
     private Integer successCount;
+    private Integer runningCount;
     private Integer errorCount;
     private Integer triggerSuccessCount;
     private Integer triggerErrorCount;
@@ -19,6 +22,30 @@ public class XxlJobStatisticDTO {
     private Integer maxHandleSecond;
     private Integer minHandleSecond;
     private Integer avgHandleSecond;
+
+    public Integer getRunningCount() {
+        return runningCount;
+    }
+
+    public void setRunningCount(Integer runningCount) {
+        this.runningCount = runningCount;
+    }
+
+    public String getScheduleType() {
+        return scheduleType;
+    }
+
+    public void setScheduleType(String scheduleType) {
+        this.scheduleType = scheduleType;
+    }
+
+    public String getScheduleConf() {
+        return scheduleConf;
+    }
+
+    public void setScheduleConf(String scheduleConf) {
+        this.scheduleConf = scheduleConf;
+    }
 
     public String getExecutorHandler() {
         return executorHandler;

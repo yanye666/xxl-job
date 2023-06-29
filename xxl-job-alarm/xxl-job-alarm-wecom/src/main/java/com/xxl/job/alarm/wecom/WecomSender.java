@@ -1,6 +1,7 @@
 package com.xxl.job.alarm.wecom;
 
 import com.xxl.job.alarm.AlarmConstants;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -32,7 +33,8 @@ public class WecomSender {
         try {
             HttpPost httpPost = new HttpPost(String.format(httpUrl, robotKey));
             httpPost.setEntity(new StringEntity(message, ContentType.APPLICATION_JSON));
-            HttpClientSingleton.INSTANCE.getHttpClient().execute(httpPost);
+            CloseableHttpResponse execute = HttpClientSingleton.INSTANCE.getHttpClient().execute(httpPost);
+            execute.close();
         } catch (Exception e) {
             logger.error("Http send msg :{} failed", message, e);
         }

@@ -299,22 +299,23 @@
 	<select id="pageLogStatistic" resultType="com.xxl.job.admin.core.dto.XxlJobStatisticDTO">
 		select t.id                                                        as jobId,
 			   t.executor_handler                                          as executorHandler,
-			   max(t.job_desc)                                             as jobDesc,
-			   count(case when t1.trigger_code is not null then 0 end)     as totalCount,
-			   count(case
-						 when ((trigger_code in (0, 200) and handle_code = 0) OR (handle_code = 200))
-							 then 0 end)                                   as successCount,
-			   count(case
-						 when ((trigger_code in (0, 200) and handle_code = 0) OR (handle_code = 200)) = false
-							 then 0 end)                                   as errorCount,
-			   count(case when t1.trigger_code in (0, 200) then 0 end)     as triggerSuccessCount,
-			   count(case when t1.trigger_code not in (0, 200) then 0 end) as triggerErrorCount,
-			   count(case when t1.handle_code = 200 then 0 end)            as handleSuccessCount,
-			   count(case when t1.handle_code != 200 then 0 end)           as handleErrorCount,
-			   max(extract(epoch FROM t1.handle_time - t1.trigger_time))   as maxHandleSecond,
-			   min(extract(epoch FROM t1.handle_time - t1.trigger_time))   as minHandleSecond,
-			   avg(extract(epoch FROM t1.handle_time - t1.trigger_time))   as avgHandleSecond
-		from xxl_job_info t
+			   t.schedule_conf                                             as scheduleConf,
+			   t.schedule_type                                             as scheduleType,
+				max(t.job_desc)                                                                      as jobDesc,
+				count(case when t1.trigger_code is not null then 0 end)                              as totalCount,
+				count(case when t1.handle_code = 200 then 1 end)                                     as successCount,
+				count(CASE WHEN (trigger_code in (0, 200) and handle_code = 0) then 1 end)           as runningCount,
+				count(case
+				when ((trigger_code in (0, 200) and handle_code = 0) OR (handle_code = 200)) = false
+				then 0 end)                                                            as errorCount,
+				count(case when t1.trigger_code in (0, 200) then 0 end)                              as triggerSuccessCount,
+				count(case when t1.trigger_code not in (0, 200) then 0 end)                          as triggerErrorCount,
+				count(case when t1.handle_code = 200 then 0 end)                                     as handleSuccessCount,
+				count(case when t1.trigger_code = 200 and t1.handle_code not in (0, 200) then 0 end) as handleErrorCount,
+				max(extract(epoch FROM t1.handle_time - t1.trigger_time))                            as maxHandleSecond,
+				min(extract(epoch FROM t1.handle_time - t1.trigger_time))                            as minHandleSecond,
+				avg(extract(epoch FROM t1.handle_time - t1.trigger_time))                            as avgHandleSecond
+				from xxl_job_info t
 				 join xxl_job_log t1 on t.id = t1.job_id
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
 			<if test="jobId==0 and jobGroup gt 0">

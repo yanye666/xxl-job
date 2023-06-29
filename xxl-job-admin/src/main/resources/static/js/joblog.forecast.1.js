@@ -93,6 +93,18 @@ $(function () {
 		//"scrollX": false,
 		"columns": [
 			{"data": 'id', "width": '5%', "visible": true},
+			{
+				"data": 'scheduleType',
+				"visible" : true,
+				"width":'13%',
+				"render": function ( data, type, row ) {
+					if (row.scheduleConf) {
+						return row.scheduleType + '：'+ row.scheduleConf;
+					} else {
+						return row.scheduleType;
+					}
+				}
+			},
 			{"data": 'executorHandler', "width": '10%', "visible": true},
 			{"data": 'jobDesc', "width": '10%', "visible": true},
 			{"data": 'totalCount', "width": '7%', "visible": true},

@@ -152,9 +152,28 @@ $(function(){
         updatePwdModalValidate.resetForm();
         $("#updatePwdModal .form .form-group").removeClass("has-error");
     });
-	
+
 });
 
+
+function formatTime(seconds) {
+    var hours = Math.floor(seconds / 3600);
+    var minutes = Math.floor((seconds % 3600) / 60);
+    var remainingSeconds = seconds % 60;
+
+    var timeString = '';
+    if (hours > 0) {
+        timeString += hours + '小时 ';
+    }
+    if (minutes > 0) {
+        timeString += minutes + '分钟 ';
+    }
+    if (remainingSeconds > 0 || timeString === '') {
+        timeString += remainingSeconds + '秒';
+    }
+
+    return timeString;
+}
 
 function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');

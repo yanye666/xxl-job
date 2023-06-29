@@ -74,18 +74,20 @@
                                 <thead>
                                 <tr>
                                     <th name="jobId">任务ID</th>
+                                    <th name="scheduleType">调度类型</th>
                                     <th name="executorHandler">执行器</th>
                                     <th name="jobDesc">任务描述</th>
                                     <th name="totalCount">总数量</th>
                                     <th name="successCount">成功数</th>
+                                    <th name="runningCount">进行中</th>
                                     <th name="errorCount">失败数</th>
                                     <th name="triggerSuccessCount">调度成功数</th>
                                     <th name="triggerErrorCount">调度失败数</th>
                                     <th name="handleSuccessCount">执行成功数</th>
                                     <th name="handleErrorCount">执行失败数</th>
-                                    <th name="maxHandleSecond">最大耗时(s)</th>
-                                    <th name="minHandleSecond">最小耗时(s)</th>
-                                    <th name="avgHandleSecond">平均耗时(s)</th>
+                                    <th name="maxHandleSecond">最大耗时</th>
+                                    <th name="minHandleSecond">最小耗时</th>
+                                    <th name="avgHandleSecond">平均耗时</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>

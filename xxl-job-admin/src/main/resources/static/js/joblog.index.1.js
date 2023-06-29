@@ -116,11 +116,11 @@ $(function() {
 						}
 					},
 					{"data": 'executorHandler', "width": '10%', "visible": true},
-					{"data": 'jobDesc', "width": '15%', "visible": true},
+					{"data": 'jobDesc', "width": '10%', "visible": true},
 					{"data": 'jobGroup', "visible": false},
 					{
 						"data": 'triggerTime',
-                        "width":'10%',
+                        "width":'8%',
 						"render": function ( data, type, row ) {
 							return data?moment(data).format("YYYY-MM-DD HH:mm:ss"):"";
 						}
@@ -142,14 +142,14 @@ $(function() {
 					},
 					{
 						"data": 'triggerMsg',
-                        "width":'10%',
+                        "width":'5%',
 						"render": function ( data, type, row ) {
 							return data?'<a class="logTips" href="javascript:;" >'+ I18n.system_show +'<span style="display:none;">'+ data +'</span></a>':I18n.system_empty;
 						}
 					},
 	                { 
 	                	"data": 'handleTime',
-                        "width":'10%',
+                        "width":'8%',
 	                	"render": function ( data, type, row ) {
 	                		return data?moment(data).format("YYYY-MM-DD HH:mm:ss"):"";
 	                	}
@@ -161,28 +161,33 @@ $(function() {
                             var html = data;
                             if (data == 200) {
                                 html = '<span style="color: green">'+ I18n.joblog_handleCode_200 +'</span>';
-                            } else if (data == 500) {
-                                html = '<span style="color: red">'+ I18n.joblog_handleCode_500 +'</span>';
-                            } else if (data == 502) {
-                                html = '<span style="color: red">'+ I18n.joblog_handleCode_502 +'</span>';
-                            } else if (data == 0) {
-                                html = '';
-                            }
-                            return html;
+							} else if (data == 500) {
+								html = '<span style="color: red">' + I18n.joblog_handleCode_500 + '</span>';
+							} else if (data == 502) {
+								html = '<span style="color: red">' + I18n.joblog_handleCode_502 + '</span>';
+							} else if (data == 0) {
+								html = '';
+							}
+							return html;
 						}
-	                },
-					{"data": 'handleSecond', "width": '5%', "visible": true},
-					{
-	                	"data": 'handleMsg',
-                        "width":'10%',
-	                	"render": function ( data, type, row ) {
-	                		return data?'<a class="logTips" href="javascript:;" >'+ I18n.system_show +'<span style="display:none;">'+ data +'</span></a>':I18n.system_empty;
-	                	}
-	                },
-	                {
-						"data": 'handleMsg' ,
-						"bSortable": false,
-                        "width":'10%',
+					},
+			{
+				"data": 'handleSecond', "width": '5%', "visible": true,
+				"render": function (data, type, row) {
+					return data ? formatTime(data) : "";
+				}
+			},
+			{
+				"data": 'handleMsg',
+				"width": '5%',
+				"render": function (data, type, row) {
+					return data ? '<a class="logTips" href="javascript:;" >' + I18n.system_show + '<span style="display:none;">' + data + '</span></a>' : I18n.system_empty;
+				}
+			},
+			{
+				"data": 'handleMsg',
+				"bSortable": false,
+                        "width":'7%',
 	                	"render": function ( data, type, row ) {
 	                		// better support expression or string, not function
 	                		return function () {

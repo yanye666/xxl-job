@@ -93,18 +93,46 @@ $(function () {
 		//"scrollX": false,
 		"columns": [
 			{"data": 'jobId', "width": '5%', "visible": true},
+			{
+				"data": 'scheduleType',
+				"visible": true,
+				"width": '10%',
+				"render": function (data, type, row) {
+					if (row.scheduleConf) {
+						return row.scheduleType + '：' + row.scheduleConf;
+					} else {
+						return row.scheduleType;
+					}
+				}
+			},
 			{"data": 'executorHandler', "width": '10%', "visible": true},
 			{"data": 'jobDesc', "width": '10%', "visible": true},
-			{"data": 'totalCount', "width": '7%', "visible": true},
-			{"data": 'successCount', "width": '7%', "visible": true},
-			{"data": 'errorCount', "width": '7%', "visible": true},
-			{"data": 'triggerSuccessCount', "width": '7%', "visible": true},
-			{"data": 'triggerErrorCount', "width": '7%', "visible": true},
-			{"data": 'handleSuccessCount', "width": '7%', "visible": true},
-			{"data": 'handleErrorCount', "width": '7%', "visible": true},
-			{"data": 'maxHandleSecond', "width": '5%', "visible": true},
-			{"data": 'minHandleSecond', "width": '5%', "visible": true},
-			{"data": 'avgHandleSecond', "width": '5%', "visible": true}
+			{"data": 'totalCount', "width": '5%', "visible": true},
+			{"data": 'successCount', "width": '5%', "visible": true},
+			{"data": 'runningCount', "width": '5%', "visible": true},
+			{"data": 'errorCount', "width": '5%', "visible": true},
+			{"data": 'triggerSuccessCount', "width": '5%', "visible": true},
+			{"data": 'triggerErrorCount', "width": '5%', "visible": true},
+			{"data": 'handleSuccessCount', "width": '5%', "visible": true},
+			{"data": 'handleErrorCount', "width": '5%', "visible": true},
+			{
+				"data": 'maxHandleSecond', "width": '5%', "visible": true,
+				"render": function (data, type, row) {
+					return data ? formatTime(data) : "";
+				}
+			},
+			{
+				"data": 'minHandleSecond', "width": '5%', "visible": true,
+				"render": function (data, type, row) {
+					return data ? formatTime(data) : "";
+				}
+			},
+			{
+				"data": 'avgHandleSecond', "width": '5%', "visible": true,
+				"render": function (data, type, row) {
+					return data ? formatTime(data) : "";
+				}
+			}
 
 		],
 		"language": {
