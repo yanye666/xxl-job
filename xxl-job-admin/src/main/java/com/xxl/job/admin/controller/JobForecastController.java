@@ -157,7 +157,7 @@ public class JobForecastController {
 		triggerHourList = triggerHourList.stream().distinct().collect(Collectors.toList());
 		List<XxlJobInfo> list = xxlJobInfoDao.pageList(0, Integer.MAX_VALUE, jobGroup, 1, null, null, null);
 		if (!list.isEmpty()) {
-			Map<Integer, XxlJobStatisticDTO> statisticMap = xxlJobLogDao.pageLogStatistic(0, Integer.MAX_VALUE, jobGroup, 0, DateUtil.addDays(endDate, -3), endDate)
+			Map<Integer, XxlJobStatisticDTO> statisticMap = xxlJobLogDao.pageLogStatistic(0, Integer.MAX_VALUE, jobGroup, 0, DateUtil.addDays(endDate, -3), endDate, null, null)
 					.stream().collect(Collectors.toMap(XxlJobStatisticDTO::getJobId, Function.identity()));
 
 			for (XxlJobInfo xxlJobInfo : list) {

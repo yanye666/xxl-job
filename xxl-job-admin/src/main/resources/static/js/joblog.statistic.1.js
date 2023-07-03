@@ -85,12 +85,17 @@ $(function () {
 				obj.filterTime = $('#filterTime').val();
 				obj.start = d.start;
 				obj.length = d.length;
+				obj.orderColumn = d.columns[d.order[0].column].data; // 获取排序列的字段名
+				obj.orderAsc = d.order[0].dir; // 获取排序方向
 				return obj;
 			}
 		},
 		"searching": false,
-		"ordering": false,
+		"ordering": true,
 		//"scrollX": false,
+		"order": [
+			[4, 'desc']
+		],
 		"columns": [
 			{"data": 'jobId', "width": '5%', "visible": true},
 			{
@@ -118,19 +123,19 @@ $(function () {
 			{
 				"data": 'maxHandleSecond', "width": '5%', "visible": true,
 				"render": function (data, type, row) {
-					return data ? formatTime(data) : "";
+					return formatTime(data);
 				}
 			},
 			{
 				"data": 'minHandleSecond', "width": '5%', "visible": true,
 				"render": function (data, type, row) {
-					return data ? formatTime(data) : "";
+					return formatTime(data);
 				}
 			},
 			{
 				"data": 'avgHandleSecond', "width": '5%', "visible": true,
 				"render": function (data, type, row) {
-					return data ? formatTime(data) : "";
+					return formatTime(data);
 				}
 			}
 

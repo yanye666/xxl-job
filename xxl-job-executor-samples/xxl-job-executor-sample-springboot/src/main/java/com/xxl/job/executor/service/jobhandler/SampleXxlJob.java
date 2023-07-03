@@ -12,8 +12,13 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * XxlJob开发示例（Bean模式）
@@ -37,16 +42,21 @@ public class SampleXxlJob {
     @XxlJob("demoJobHandler")
     public void demoJobHandler() throws Exception {
         XxlJobHelper.log("XXL-JOB, Hello World.");
-
+        List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            if (i == 0) {
-                throw new SecurityException("1111");
-
-            }
-            XxlJobHelper.log("beat at:" + i);
-            TimeUnit.SECONDS.sleep(2);
+            list.add(i);
         }
+        list.stream().map(task -> CompletableFuture.runAsync(() -> {
+            XxlJobHelper.log("beat at:" + task);
+            try {
+                System.out.println("11111");
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }, ForkJoinPool.commonPool())).collect(Collectors.toList()).stream().map(CompletableFuture::join).collect(Collectors.toList());
         // default success
+        System.out.println("11111");
     }
 
 

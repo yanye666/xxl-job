@@ -157,6 +157,9 @@ $(function(){
 
 
 function formatTime(seconds) {
+    if (seconds === null) {
+        return '';
+    }
     var hours = Math.floor(seconds / 3600);
     var minutes = Math.floor((seconds % 3600) / 60);
     var remainingSeconds = seconds % 60;

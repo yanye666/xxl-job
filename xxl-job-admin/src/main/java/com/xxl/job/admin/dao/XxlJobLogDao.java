@@ -75,6 +75,8 @@ public interface XxlJobLogDao {
 													 @Param("jobGroup") int jobGroup,
 													 @Param("jobId") int jobId,
 													 @Param("triggerTimeStart") Date triggerTimeStart,
-													 @Param("triggerTimeEnd") Date triggerTimeEnd);
+													 @Param("triggerTimeEnd") Date triggerTimeEnd,
+													 @Param("orderColumn") String orderColumn,
+													 @Param("orderAsc") String orderAsc);
 
 }

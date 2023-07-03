@@ -174,7 +174,7 @@ $(function() {
 			{
 				"data": 'handleSecond', "width": '5%', "visible": true,
 				"render": function (data, type, row) {
-					return data ? formatTime(data) : "";
+					return formatTime(data);
 				}
 			},
 			{

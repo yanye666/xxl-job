@@ -297,7 +297,7 @@
 	</select>
 
 	<select id="pageLogStatistic" resultType="com.xxl.job.admin.core.dto.XxlJobStatisticDTO">
-		select t.id                                                        as jobId,
+		select * from (select t.id                                                        as jobId,
 			   t.executor_handler                                          as executorHandler,
 			   t.schedule_conf                                             as scheduleConf,
 			   t.schedule_type                                             as scheduleType,
@@ -331,8 +331,11 @@
 				AND t1.trigger_time <![CDATA[ <= ]]> #{triggerTimeEnd}
 			</if>
 		</trim>
-		group by t.id
-		order by count(1) desc
+		group by t.id) t
+		<if test="orderColumn != null">
+			order by ${orderColumn} ${orderAsc}
+		</if>
+		LIMIT #{pagesize} OFFSET #{offset}
 	</select>
 
 </mapper>
