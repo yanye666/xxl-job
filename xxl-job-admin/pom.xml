@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.xuxueli</groupId>
     <artifactId>xxl-job</artifactId>
-    <version>2.4.1.XK-SNAPSHOT</version>
+    <version>2.4.1.XK-RELEASE</version>
   </parent>
   <artifactId>xxl-job-admin</artifactId>
   <packaging>jar</packaging>
@@ -136,6 +136,81 @@
               <include>${project.build.finalName}.jar</include>
             </resource>
           </resources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <allowInsecureRegistries>true</allowInsecureRegistries>
+          <!--from节点用来设置镜像的基础镜像，相当于Docerkfile中的FROM关键字-->
+          <!--华为云基础镜像地址
+		  <from>
+			  <image>swr.cn-south-1.myhuaweicloud.com/cce-gylsy/centoszhjdk8201:latest</image>
+			  <auth>
+				  <username>cn-south-1@Q2E5YBYB9QSFPFVMCMXD</username>
+				  <password>923a58416857d2ef2fb4074b6a4700d038997a681a9692e58dfdfb138a5992c7</password>
+			  </auth>
+		  </from>
+		  -->
+          <!--本地基础镜像地址-->
+          <from>
+            <image>192.168.16.55/library/centoszhjdk8201:latest</image>
+            <auth>
+              <username>jiangchen</username>
+              <password>Jiangchen123</password>
+            </auth>
+          </from>
+          <to>
+            <auth>
+              <username>cn-south-1@Q2E5YBYB9QSFPFVMCMXD</username>
+              <password>923a58416857d2ef2fb4074b6a4700d038997a681a9692e58dfdfb138a5992c7</password>
+            </auth>
+            <!--镜像名称和tag-->
+            <image>swr.cn-south-1.myhuaweicloud.com/cce-gylsy/${project.artifactId}:latest</image>
+          </to>
+          <!--容器相关的属性-->
+          <container>
+            <!--环境变量-->
+            <environment>
+              <LANG>C.UTF-8</LANG>
+              <!--<JAVA_TOOL_OPTIONS>-Xms128m -Xmx128m</JAVA_TOOL_OPTIONS>-->
+              <JAVA_TOOL_OPTIONS>-Xms1g -Xmx1g</JAVA_TOOL_OPTIONS>
+              <!-- apollo配置 -->
+              <APOLLO_META>http://10.0.0.14:10021</APOLLO_META>
+              <APP_ID>xxl-job-admin1</APP_ID>
+              <ENV>PRO</ENV>
+              <IDC>gray</IDC>
+            </environment>
+            <!--jvm参数-->
+            <jvmFlags>
+              <jvmFlag>-Xss1M</jvmFlag>
+              <jvmFlag>-XX:ErrorFile=/logs/hs_err_pid.log</jvmFlag>
+              <jvmFlag>-XX:+UseContainerSupport</jvmFlag>
+              <jvmFlag>-XX:MetaspaceSize=128M</jvmFlag>
+              <jvmFlag>-XX:MaxMetaspaceSize=256M</jvmFlag>
+              <jvmFlag>-XX:+PrintGCDetails</jvmFlag>
+              <jvmFlag>-XX:+PrintGCDateStamps</jvmFlag>
+              <jvmFlag>-XX:+UseG1GC</jvmFlag>
+              <jvmFlag>-XX:G1HeapRegionSize=16m</jvmFlag>
+              <jvmFlag>-XX:+HeapDumpOnOutOfMemoryError</jvmFlag>
+              <jvmFlag>-XX:HeapDumpPath=/logs/oom.hprof</jvmFlag>
+              <jvmFlag>-Xloggc:/logs/gc-%t.log</jvmFlag>
+              <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+              <jvmFlag>-Duser.timezone=GMT+8</jvmFlag>
+            </jvmFlags>
+            <mainClass>com.xxl.job.admin.XxlJobAdminApplication</mainClass>
+            <!--要暴露的端口-->
+            <ports>
+              <port>9000</port>
+              <port>9002</port>
+            </ports>
+            <volumes>
+              <volume>/etc/localtime</volume>
+              <volume>/logs</volume>
+            </volumes>
+          </container>
         </configuration>
       </plugin>
     </plugins>
