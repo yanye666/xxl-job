@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xuxueli</groupId>
 	<artifactId>xxl-job</artifactId>
-	<version>2.4.1-SNAPSHOT</version>
+	<version>2.4.1.XK-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>${project.artifactId}</name>
@@ -47,6 +47,7 @@
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
 		<maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
 		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+		<apollo.version>1.2.0</apollo.version>
 	</properties>
 
 	<build>

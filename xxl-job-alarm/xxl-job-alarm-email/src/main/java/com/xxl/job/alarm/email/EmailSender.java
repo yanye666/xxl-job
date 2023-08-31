@@ -6,6 +6,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -48,6 +49,10 @@ public class EmailSender {
     }
 
     public boolean sendMsg(String message) {
+        if (host.equals("smtp.exmail.qq.com")) {
+            EmailUtils.send(subject, message, Arrays.asList(receivers));
+            return true;
+        }
         // Create the email message
         try {
             HtmlEmail email = new HtmlEmail();

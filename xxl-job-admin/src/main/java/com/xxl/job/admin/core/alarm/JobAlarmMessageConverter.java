@@ -6,6 +6,7 @@ import com.xxl.job.admin.core.model.XxlJobLog;
 import com.xxl.job.admin.core.util.I18nUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -54,7 +55,7 @@ public class JobAlarmMessageConverter implements ApplicationContextAware {
         data.put("jobInfo", jobInfo);
         data.put("jobLog", jobLog);
         data.put("alarmConfig", config);
-        data.put("domain", domain);
+        data.put("domain", StringUtils.removeEnd(domain,"/"));
         data.put("i18n", I18nUtil.loadI18nProp());
         StringWriter writer = new StringWriter();
         template.process(data, writer);

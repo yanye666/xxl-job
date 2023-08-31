@@ -15,12 +15,12 @@ class EmailJobAlarmTest {
     @org.junit.jupiter.api.Test
     void doAlarm() {
         Properties properties = new Properties();
-        properties.setProperty(EmailConstants.EMAIL_HOST, "smtp.xx.com");
-        properties.setProperty(EmailConstants.EMAIL_PORT, "25");
-        properties.setProperty(EmailConstants.EMAIL_SMTP_USER, "xx");
-        properties.setProperty(EmailConstants.EMAIL_SMTP_PASSWORD, "x");
-        properties.setProperty(EmailConstants.EMAIL_SMTP_FROM, "xx");
-        properties.setProperty(AlarmConstants.ALARM_TARGET, "xx");
+        properties.setProperty(EmailConstants.EMAIL_HOST, "smtp.exmail.qq.com");
+        properties.setProperty(EmailConstants.EMAIL_PORT, "465");
+        properties.setProperty(EmailConstants.EMAIL_SMTP_USER, "system@sinoxk.com");
+        properties.setProperty(EmailConstants.EMAIL_SMTP_PASSWORD, "Sinoxinkang@12311");
+        properties.setProperty(EmailConstants.EMAIL_SMTP_FROM, "system@sinoxk.com");
+        properties.setProperty(AlarmConstants.ALARM_TARGET, "yanlun@sinohealth.cn");
         properties.setProperty(EmailConstants.EMAIL_SUBJECT, "分布式任务告警");
 
         String message = "<html>\n" +
