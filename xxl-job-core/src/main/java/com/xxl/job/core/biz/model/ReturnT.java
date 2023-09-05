@@ -10,6 +10,8 @@ import java.io.Serializable;
 public class ReturnT<T> implements Serializable {
 	public static final long serialVersionUID = 42L;
 
+	public static final int WAIT_CODE = 0;
+	public static final int RUNNING_CODE = 100;
 	public static final int SUCCESS_CODE = 200;
 	public static final int FAIL_CODE = 500;
 
@@ -29,7 +31,16 @@ public class ReturnT<T> implements Serializable {
 		this.code = SUCCESS_CODE;
 		this.content = content;
 	}
-	
+
+	public static ReturnT success(String msg) {
+		return new ReturnT(SUCCESS_CODE, msg);
+	}
+
+	public static ReturnT fail(String msg) {
+		return new ReturnT(FAIL_CODE, msg);
+	}
+
+
 	public int getCode() {
 		return code;
 	}

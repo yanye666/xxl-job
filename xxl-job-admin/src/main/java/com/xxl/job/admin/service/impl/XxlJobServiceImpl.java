@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
@@ -161,7 +162,7 @@ public class XxlJobServiceImpl implements XxlJobService {
             return new ReturnT<String>(ReturnT.FAIL_CODE, (I18nUtil.getString("jobinfo_field_add") + I18nUtil.getString("system_fail")));
         }
 
-        if (jobInfo.getAlarmConfigList() != null) {
+        if (!CollectionUtils.isEmpty(jobInfo.getAlarmConfigList())) {
             jobInfo.getAlarmConfigList()
                     .forEach(alarmConfig -> alarmConfig.setJobId(jobInfo.getId()));
             xxlJobAlarmDao.batchSave(jobInfo.getAlarmConfigList());
@@ -299,7 +300,7 @@ public class XxlJobServiceImpl implements XxlJobService {
         xxlJobInfoDao.update(exists_jobInfo);
 
         xxlJobAlarmDao.deleteByJobId(jobInfo.getId());
-        if (jobInfo.getAlarmConfigList() != null) {
+        if (!CollectionUtils.isEmpty(jobInfo.getAlarmConfigList())) {
             jobInfo.getAlarmConfigList()
                     .forEach(alarmConfig -> alarmConfig.setJobId(jobInfo.getId()));
             xxlJobAlarmDao.batchSave(jobInfo.getAlarmConfigList());

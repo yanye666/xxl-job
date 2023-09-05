@@ -78,6 +78,10 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
     @Resource
     private XxlJobAlarmDao xxlJobAlarmDao;
     @Resource
+    private XxlJobChainLogDao xxlJobChainLogDao;
+    @Resource
+    private XxlJobChainDao xxlJobChainDao;
+    @Resource
     private DataSource dataSource;
     @Resource
     private JobAlarmer jobAlarmer;
@@ -137,6 +141,14 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 
     public XxlJobAlarmDao getXxlJobAlarmDao() {
         return xxlJobAlarmDao;
+    }
+
+    public XxlJobChainLogDao getXxlJobChainLogDao() {
+        return xxlJobChainLogDao;
+    }
+
+    public XxlJobChainDao getXxlJobChainDao() {
+        return xxlJobChainDao;
     }
 
     public DataSource getDataSource() {

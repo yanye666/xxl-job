@@ -1,5 +1,6 @@
 package com.xxl.job.core.context;
 
+import com.xxl.job.core.biz.model.TriggerParam;
 import com.xxl.job.core.log.XxlJobFileAppender;
 import com.xxl.job.core.util.DateUtil;
 import org.slf4j.Logger;
@@ -46,6 +47,15 @@ public class XxlJobHelper {
         }
 
         return xxlJobContext.getJobParam();
+    }
+
+    public static TriggerParam getTriggerParam() {
+        XxlJobContext xxlJobContext = XxlJobContext.getXxlJobContext();
+        if (xxlJobContext == null) {
+            return null;
+        }
+
+        return xxlJobContext.getTriggerParam();
     }
 
     // ---------------------- for log ----------------------

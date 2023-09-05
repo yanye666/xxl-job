@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -75,6 +74,10 @@ public class JobAlarmer implements InitializingBean {
      * @return
      */
     public boolean alarm(XxlJobInfo info, List<XxlJobAlarm> jobAlarmList, XxlJobLog jobLog) {
+        return alarm(info, jobAlarmList, jobLog, null);
+    }
+
+    public boolean alarm(XxlJobInfo info, List<XxlJobAlarm> jobAlarmList, XxlJobLog jobLog, String message) {
         if (jobAlarmList == null || jobAlarmList.isEmpty()) {
             return true;
         }
@@ -88,7 +91,9 @@ public class JobAlarmer implements InitializingBean {
                 com.xxl.job.alarm.JobAlarm jobAlarm = jobAlarmMap.get(xxlAlarmConfig.getAlarmType());
                 if (jobAlarm != null) {
                     Properties alarmConfigProperties = prepareAlarmConfig(xxlAlarmConfig);
-                    String message = jobAlarmMessageConverter.convert(xxlAlarmConfig.getAlarmType(), alarmConfigProperties, jobGroup, info, jobLog);
+                    if (StringUtils.isBlank(message)) {
+                        message = jobAlarmMessageConverter.convert(xxlAlarmConfig.getAlarmType(), alarmConfigProperties, jobGroup, info, jobLog);
+                    }
                     try {
                         result = jobAlarm.doAlarm(alarmConfigProperties, message) || result;
                     } catch (Exception e) {

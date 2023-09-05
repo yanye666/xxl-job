@@ -2,8 +2,11 @@ package com.xxl.job.admin.core.thread;
 
 import com.xxl.job.admin.core.complete.XxlJobCompleter;
 import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
+import com.xxl.job.admin.core.event.JobFeedbackEvent;
+import com.xxl.job.admin.core.model.XxlJobInfo;
 import com.xxl.job.admin.core.model.XxlJobLog;
 import com.xxl.job.admin.core.util.I18nUtil;
+import com.xxl.job.admin.core.util.SpringUtils;
 import com.xxl.job.core.biz.model.HandleCallbackParam;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.util.DateUtil;
@@ -159,6 +162,13 @@ public class JobCompleteHelper {
 		}
 		if (log.getHandleCode() > 0) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "log repeate callback.");     // avoid repeat callback, trigger child job etc
+		}
+
+		//反馈进度
+		if (handleCallbackParam.getHandleCode() == ReturnT.RUNNING_CODE) {
+			XxlJobInfo jobInfo = XxlJobAdminConfig.getAdminConfig().getXxlJobInfoDao().loadById(log.getJobId());
+			SpringUtils.getApplicationContext().publishEvent(new JobFeedbackEvent(this, jobInfo, log, handleCallbackParam));
+			return ReturnT.SUCCESS;
 		}
 
 		// handle msg

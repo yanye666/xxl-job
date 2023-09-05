@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxl.job.admin.dao.XxlJobChainLogDao">
+
+    <resultMap id="BaseResultMap" type="com.xxl.job.admin.core.model.XxlJobChainLog" >
+        <result column="id" property="id" />
+        <result column="job_id" property="jobId" />
+        <result column="log_id" property="logId" />
+        <result column="chain_id" property="chainId" />
+        <result column="executor_job_id" property="executorJobId" />
+        <result column="handle_code" property="handleCode" />
+        <result column="executor_log_id" property="executorLogId" />
+    </resultMap>
+
+    <insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobChainLog" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO XXL_JOB_CHAIN_LOG
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != jobId and '' != jobId">
+                job_id,
+            </if>
+            <if test="null != logId and '' != logId">
+                log_id,
+            </if>
+            <if test="null != chainId and '' != chainId">
+                chain_id,
+            </if>
+            <if test="null != executorJobId and '' != executorJobId">
+                executor_job_id,
+            </if>
+            <if test="null != handleCode and '' != handleCode">
+                handle_code,
+            </if>
+            <if test="null != executorLogId and '' != executorLogId">
+                executor_log_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != jobId and '' != jobId">
+                #{jobId},
+            </if>
+            <if test="null != logId and '' != logId">
+                #{logId},
+            </if>
+            <if test="null != chainId and '' != chainId">
+                #{chainId},
+            </if>
+            <if test="null != executorJobId and '' != executorJobId">
+                #{executorJobId},
+            </if>
+            <if test="null != handleCode and '' != handleCode">
+                #{handleCode},
+            </if>
+            <if test="null != executorLogId and '' != executorLogId">
+                #{executorLogId}
+            </if>
+        </trim>
+    </insert>
+
+	<update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobChainLog">
+		UPDATE XXL_JOB_CHAIN_LOG
+		<set>
+			<if test="null != jobId and '' != jobId">job_id = #{jobId},</if>
+			<if test="null != logId and '' != logId">log_id = #{logId},</if>
+			<if test="null != chainId and '' != chainId">chain_id = #{chainId},</if>
+			<if test="null != executorJobId and '' != executorJobId">executor_job_id = #{executorJobId},</if>
+			<if test="null != handleCode and '' != handleCode">handle_code = #{handleCode},</if>
+			<if test="null != executorLogId and '' != executorLogId">executor_log_id = #{executorLogId}</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+    <select id="selectByExecutorLogId" resultMap="BaseResultMap">
+        select * from XXL_JOB_CHAIN_LOG where executor_log_id = #{executorLogId}
+    </select>
+
+    <select id="countByLogId" resultType="java.lang.Integer">
+        select count(1) from XXL_JOB_CHAIN_LOG where log_id = #{logId} and handle_code = #{handleCode}
+    </select>
+
+    <select id="selectByExecutorChainId" resultMap="BaseResultMap">
+        select * from XXL_JOB_CHAIN_LOG where log_id = #{logId} and chain_id = #{chainId}
+    </select>
+
+</mapper>

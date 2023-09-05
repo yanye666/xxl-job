@@ -1,5 +1,7 @@
 package com.xxl.job.core.context;
 
+import com.xxl.job.core.biz.model.TriggerParam;
+
 /**
  * xxl-job context
  *
@@ -55,6 +57,8 @@ public class XxlJobContext {
      */
     private int handleCode;
 
+    private TriggerParam triggerParam;
+
     /**
      * handleMsg：The simple log msg of job execution
      */
@@ -68,6 +72,16 @@ public class XxlJobContext {
         this.shardIndex = shardIndex;
         this.shardTotal = shardTotal;
 
+        this.handleCode = HANDLE_CODE_SUCCESS;  // default success
+    }
+
+    public XxlJobContext(TriggerParam triggerParam, String jobLogFileName) {
+        this(triggerParam.getJobId(),
+                triggerParam.getExecutorParams(),
+                jobLogFileName,
+                triggerParam.getBroadcastIndex(),
+                triggerParam.getBroadcastTotal());
+        this.triggerParam = triggerParam;
         this.handleCode = HANDLE_CODE_SUCCESS;  // default success
     }
 
@@ -107,7 +121,11 @@ public class XxlJobContext {
         return handleMsg;
     }
 
-    // ---------------------- tool ----------------------
+    public TriggerParam getTriggerParam() {
+        return triggerParam;
+    }
+
+// ---------------------- tool ----------------------
 
     private static InheritableThreadLocal<XxlJobContext> contextHolder = new InheritableThreadLocal<XxlJobContext>(); // support for child thread of job handler)
 

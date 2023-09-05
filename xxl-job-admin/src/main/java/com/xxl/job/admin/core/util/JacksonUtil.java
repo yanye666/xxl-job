@@ -5,10 +5,14 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Jackson util
@@ -89,4 +93,12 @@ public class JacksonUtil {
 		}
 		return null;
 	}
+
+	public static <T> List<T> readList(String jsonStr, Class<T> clazz) {
+		if (StringUtils.isBlank(jsonStr)) {
+			return Collections.emptyList();
+		}
+		return readValue(jsonStr, ArrayList.class, clazz);
+	}
+
 }

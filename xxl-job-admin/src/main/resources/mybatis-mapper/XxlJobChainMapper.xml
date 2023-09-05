@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxl.job.admin.dao.XxlJobChainDao">
+
+    <resultMap id="BaseResultMap" type="com.xxl.job.admin.core.model.XxlJobChain">
+        <result column="id" property="id"/>
+        <result column="job_id" property="jobId"/>
+        <result column="log_id" property="logId"/>
+        <result column="executor_job_id" property="executorJobId"/>
+        <result column="sort" property="sort"/>
+        <result column="executor_param" property="executorParam"/>
+        <result column="handle_code" property="handleCode"/>
+    </resultMap>
+
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.xxl.job.admin.core.model.XxlJobChain">
+        INSERT INTO XXL_JOB_CHAIN
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != jobId and '' != jobId">
+                job_id,
+            </if>
+            <if test="null != logId and '' != logId">
+                log_id,
+            </if>
+            <if test="null != executorJobId and '' != executorJobId">
+                executor_job_id,
+            </if>
+            <if test="null != sort and '' != sort">
+                sort,
+            </if>
+            <if test="null != executorParam and '' != executorParam">
+                executor_param,
+            </if>
+            <if test="null != handleCode and '' != handleCode">
+                handle_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != jobId and '' != jobId">
+                #{jobId},
+            </if>
+            <if test="null != logId and '' != logId">
+                #{logId},
+            </if>
+            <if test="null != executorJobId and '' != executorJobId">
+                #{executorJobId},
+            </if>
+            <if test="null != sort and '' != sort">
+                #{sort},
+            </if>
+            <if test="null != executorParam and '' != executorParam">
+                #{executorParam},
+            </if>
+            <if test="null != handleCode and '' != handleCode">
+                #{handleCode}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="saveList" parameterType="java.util.List">
+        INSERT INTO XXL_JOB_CHAIN
+        (job_id,log_id,executor_job_id,sort,executor_param,handle_code)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.jobId},
+            #{item.logId},
+            #{item.executorJobId},
+            #{item.sort},
+            #{item.executorParam},
+            #{item.handleCode}
+            )
+        </foreach>
+    </insert>
+    <update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobChain">
+        UPDATE XXL_JOB_CHAIN
+        <set>
+            <if test="null != jobId and '' != jobId">job_id = #{jobId},</if>
+            <if test="null != logId and '' != logId">log_id = #{logId},</if>
+            <if test="null != executorJobId and '' != executorJobId">executor_job_id = #{executorJobId},</if>
+            <if test="null != sort and '' != sort">sort = #{sort},</if>
+            <if test="null != executorParam and '' != executorParam">executor_param = #{executorParam},</if>
+            <if test="null != handleCode and '' != handleCode">handle_code = #{handleCode}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE XXL_JOB_CHAIN
+        SET handle_code = #{newHandleCode}
+        WHERE id = #{id}
+          AND handle_code = #{oldHandleCode}
+    </update>
+
+    <select id="selectByLogId" resultMap="BaseResultMap">
+        select *
+        from XXL_JOB_CHAIN
+        where log_id = #{logId}
+        order by sort
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select *
+        from XXL_JOB_CHAIN
+        where id = #{id}
+    </select>
+
+
+</mapper>
