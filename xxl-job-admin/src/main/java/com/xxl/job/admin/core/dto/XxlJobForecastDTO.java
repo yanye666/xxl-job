@@ -17,6 +17,15 @@ public class XxlJobForecastDTO extends XxlJobInfo {
 
     private Date firstTime;
 
+    private XxlJobStatisticDTO jobStatistic;
+
+    public XxlJobStatisticDTO getJobStatistic() {
+        return jobStatistic;
+    }
+
+    public void setJobStatistic(XxlJobStatisticDTO jobStatistic) {
+        this.jobStatistic = jobStatistic;
+    }
 
     public Date getFirstTime() {
         return firstTime;

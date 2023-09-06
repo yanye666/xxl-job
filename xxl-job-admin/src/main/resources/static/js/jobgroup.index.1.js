@@ -118,6 +118,13 @@ $(function() {
 		jobGroupTable.fnDraw();
 	});
 
+	$(document).keyup(function(e){
+		var key = e.which;
+		if(key==13){
+			jobGroupTable.fnDraw();
+		}
+	});
+
 	// job registryinfo
 	$("#jobgroup_list").on('click', '.show_registryList',function() {
 		var id = $(this).attr("_id");
@@ -355,5 +362,5 @@ $(function() {
 		$("#updateModal .form .form-group").removeClass("has-error");
 	});
 
-	
+
 });

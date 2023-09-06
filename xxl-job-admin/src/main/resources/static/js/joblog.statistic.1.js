@@ -175,5 +175,12 @@ $(function () {
 	$('#searchBtn').on('click', function () {
 		logTable.fnDraw();
 	});
+
+	$(document).keyup(function(e){
+		var key = e.which;
+		if(key==13){
+			logTable.fnDraw();
+		}
+	});
 });
 

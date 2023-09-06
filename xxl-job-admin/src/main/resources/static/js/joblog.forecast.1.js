@@ -125,6 +125,17 @@ $(function () {
 					return data?moment(data).format("YYYY-MM-DD HH:mm:ss"):"";
 				}
 			},
+			{
+				"data": 'jobStatistic.avgHandleSecond',
+				"width":'10%',
+				"render": function (data, type, row) {
+					if (row.jobStatistic && row.jobStatistic.avgHandleSecond !== null) {
+						return formatTime(data);
+					} else {
+						return "";
+					}
+				}
+			},
 
 		],
 		"language": {
@@ -160,6 +171,19 @@ $(function () {
 
 	// search Btn
 	$('#searchBtn').on('click', function () {
+		logTable.fnDraw();
+		let [value1, value2] = $('#filterTime').val().split(" - ");
+		freshChartDate(value1, value2);
+	});
+
+	$(document).keyup(function(e){
+		var key = e.which;
+		if(key==13){
+			logTable.fnDraw();
+		}
+	});
+
+	$('#jobGroup').on('change', function(){
 		logTable.fnDraw();
 		let [value1, value2] = $('#filterTime').val().split(" - ");
 		freshChartDate(value1, value2);

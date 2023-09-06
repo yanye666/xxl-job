@@ -89,6 +89,7 @@
                                     <th name="totalCount">总数量</th>
                                     <th name="firstTime">第一次调度时间</th>
                                     <th name="lastTime">最后一次调度时间</th>
+                                    <th name="jobStatistic.avgHandleSecond">平均耗时</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>

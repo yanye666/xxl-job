@@ -106,7 +106,14 @@ $(function() {
 	$('#searchBtn').on('click', function(){
         userListTable.fnDraw();
 	});
-	
+
+	$(document).keyup(function(e){
+		var key = e.which;
+		if(key==13){
+			userListTable.fnDraw();
+		}
+	});
+
 	// job operate
 	$("#user_list").on('click', '.delete',function() {
 		var id = $(this).parent('p').attr("id");

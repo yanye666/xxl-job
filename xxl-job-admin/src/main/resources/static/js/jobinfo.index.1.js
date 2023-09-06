@@ -200,12 +200,23 @@ $(function() {
 		jobTable.fnDraw();
 	});
 
+	$(document).keyup(function(e){
+		var key = e.which;
+		if(key==13){
+			jobTable.fnDraw();
+		}
+	});
+
 	// jobGroup change
 	$('#jobGroup').on('change', function(){
         //reload
         var jobGroup = $('#jobGroup').val();
         window.location.href = base_url + "/jobinfo?jobGroup=" + jobGroup;
     });
+
+	$('#triggerStatus').on('change', function(){
+		jobTable.fnDraw();
+	});
 
 	// job operate
 	$("#job_list").on('click', '.job_operate',function() {

@@ -110,6 +110,9 @@ public class JobForecastController {
 				xxlJobForecastDTO.setTotalCount(nextValidTimeAfter.size());
 				xxlJobForecastDTO.setFirstTime(CollectionUtils.firstElement(nextValidTimeAfter));
 				xxlJobForecastDTO.setLastTime(CollectionUtils.lastElement(nextValidTimeAfter));
+				Map<Integer, XxlJobStatisticDTO> statisticMap = xxlJobLogDao.pageLogStatistic(0, Integer.MAX_VALUE, jobGroup, 0, DateUtil.addDays(triggerTimeEnd, -3), triggerTimeEnd, null, null)
+						.stream().collect(Collectors.toMap(XxlJobStatisticDTO::getJobId, Function.identity()));
+				Optional.ofNullable(statisticMap.get(xxlJobInfo.getId())).ifPresent(xxlJobForecastDTO::setJobStatistic);
 				collect.add(xxlJobForecastDTO);
 			}
 			collect.sort(Comparator.comparing(XxlJobForecastDTO::getTotalCount).reversed());

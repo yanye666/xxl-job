@@ -260,6 +260,13 @@ $(function() {
 		var msg = $(this).find('span').html();
 		ComAlertTec.show(msg);
 	});
+
+	$(document).keyup(function(e){
+		var key = e.which;
+		if(key==13){
+			logTable.fnDraw();
+		}
+	});
 	
 	// search Btn
 	$('#searchBtn').on('click', function(){
@@ -269,9 +276,16 @@ $(function() {
 	// logDetail look
 	$('#joblog_list').on('click', '.logDetail', function(){
 		var _id = $(this).attr('_id');
-		
 		window.open(base_url + '/joblog/logDetailPage?id=' + _id);
 		return;
+	});
+
+	$('#logStatus').on('change', function(){
+		logTable.fnDraw();
+	});
+
+	$('#jobGroup').on('change', function(){
+		logTable.fnDraw();
 	});
 
 	/**
