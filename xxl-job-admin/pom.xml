@@ -168,7 +168,7 @@
               <password>923a58416857d2ef2fb4074b6a4700d038997a681a9692e58dfdfb138a5992c7</password>
             </auth>
             <!--镜像名称和tag-->
-            <image>swr.cn-south-1.myhuaweicloud.com/cce-gylsy/${project.artifactId}:latest</image>
+            <image>swr.cn-south-1.myhuaweicloud.com/cce-gylsy/${project.artifactId}:${version}</image>
           </to>
           <!--容器相关的属性-->
           <container>

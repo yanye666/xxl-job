@@ -147,4 +147,17 @@
 		</profile>
 	</profiles>
 
+	<distributionManagement>
+		<!-- 发布配置 -->
+		<repository>
+			<id>maven-releases</id>
+			<url>http://192.168.16.200:8081/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>maven-snapshots</id>
+			<url>http://192.168.16.200:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
 </project>
