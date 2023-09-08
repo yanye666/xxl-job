@@ -8,21 +8,20 @@ import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.dao.XxlJobGroupDao;
 import com.xxl.job.admin.dao.XxlJobInfoDao;
 import com.xxl.job.admin.dao.XxlJobLogDao;
+import com.xxl.job.core.util.CollUtil;
 import com.xxl.job.core.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * index controller
@@ -92,8 +91,10 @@ public class JobStatisticController {
 		}
 
 		// page query
-		int list_count = xxlJobLogDao.pageLogStatisticCount(start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd);
-		List<XxlJobStatisticDTO> list = xxlJobLogDao.pageLogStatistic(start, length, jobGroup, jobId, triggerTimeStart, triggerTimeEnd, orderColumn, orderAsc);
+		ArrayList<Integer> jobs = new ArrayList<>();
+		jobs.add(jobId);
+		int list_count = xxlJobLogDao.pageLogStatisticCount(start, length, jobGroup, jobs, triggerTimeStart, triggerTimeEnd);
+		List<XxlJobStatisticDTO> list = xxlJobLogDao.pageLogStatistic(start, length, jobGroup, jobs, triggerTimeStart, triggerTimeEnd, orderColumn, orderAsc);
 		// package result
 		Map<String, Object> maps = new HashMap<String, Object>();
 		maps.put("recordsTotal", list_count);        // 总记录数

@@ -66,14 +66,14 @@ public interface XxlJobLogDao {
 	public int pageLogStatisticCount(@Param("offset") int offset,
 									 @Param("pagesize") int pagesize,
 									 @Param("jobGroup") int jobGroup,
-									 @Param("jobId") int jobId,
+									 @Param("jobIds") List<Integer> jobIds,
 									 @Param("triggerTimeStart") Date triggerTimeStart,
 									 @Param("triggerTimeEnd") Date triggerTimeEnd);
 
 	public List<XxlJobStatisticDTO> pageLogStatistic(@Param("offset") int offset,
 													 @Param("pagesize") int pagesize,
 													 @Param("jobGroup") int jobGroup,
-													 @Param("jobId") int jobId,
+													 @Param("jobIds") List<Integer> jobIds,
 													 @Param("triggerTimeStart") Date triggerTimeStart,
 													 @Param("triggerTimeEnd") Date triggerTimeEnd,
 													 @Param("orderColumn") String orderColumn,

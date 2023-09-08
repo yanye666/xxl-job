@@ -100,6 +100,9 @@ public class JobForecastController {
 		maps.put("data", list);                    // 分页列表
 		if (!list.isEmpty()) {
 			List<XxlJobForecastDTO> collect = new ArrayList<>();
+			List<Integer> jobs = list.stream().map(XxlJobInfo::getId).collect(Collectors.toList());
+			Map<Integer, XxlJobStatisticDTO> statisticMap = xxlJobLogDao.pageLogStatistic(0, Integer.MAX_VALUE, jobGroup, jobs, DateUtil.addDays(triggerTimeEnd, -3), triggerTimeEnd, null, null)
+					.stream().collect(Collectors.toMap(XxlJobStatisticDTO::getJobId, Function.identity()));
 			for (XxlJobInfo xxlJobInfo : list) {
 				XxlJobForecastDTO xxlJobForecastDTO = new XxlJobForecastDTO();
 				BeanUtils.copyProperties(xxlJobInfo, xxlJobForecastDTO);
@@ -110,8 +113,6 @@ public class JobForecastController {
 				xxlJobForecastDTO.setTotalCount(nextValidTimeAfter.size());
 				xxlJobForecastDTO.setFirstTime(CollectionUtils.firstElement(nextValidTimeAfter));
 				xxlJobForecastDTO.setLastTime(CollectionUtils.lastElement(nextValidTimeAfter));
-				Map<Integer, XxlJobStatisticDTO> statisticMap = xxlJobLogDao.pageLogStatistic(0, Integer.MAX_VALUE, jobGroup, 0, DateUtil.addDays(triggerTimeEnd, -3), triggerTimeEnd, null, null)
-						.stream().collect(Collectors.toMap(XxlJobStatisticDTO::getJobId, Function.identity()));
 				Optional.ofNullable(statisticMap.get(xxlJobInfo.getId())).ifPresent(xxlJobForecastDTO::setJobStatistic);
 				collect.add(xxlJobForecastDTO);
 			}
@@ -160,7 +161,8 @@ public class JobForecastController {
 		triggerHourList = triggerHourList.stream().distinct().collect(Collectors.toList());
 		List<XxlJobInfo> list = xxlJobInfoDao.pageList(0, Integer.MAX_VALUE, jobGroup, 1, null, null, null);
 		if (!list.isEmpty()) {
-			Map<Integer, XxlJobStatisticDTO> statisticMap = xxlJobLogDao.pageLogStatistic(0, Integer.MAX_VALUE, jobGroup, 0, DateUtil.addDays(endDate, -3), endDate, null, null)
+			List<Integer> jobs = list.stream().map(XxlJobInfo::getId).collect(Collectors.toList());
+			Map<Integer, XxlJobStatisticDTO> statisticMap = xxlJobLogDao.pageLogStatistic(0, Integer.MAX_VALUE, jobGroup, jobs, DateUtil.addDays(endDate, -3), endDate, null, null)
 					.stream().collect(Collectors.toMap(XxlJobStatisticDTO::getJobId, Function.identity()));
 
 			for (XxlJobInfo xxlJobInfo : list) {

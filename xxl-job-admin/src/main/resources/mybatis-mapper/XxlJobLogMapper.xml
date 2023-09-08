@@ -281,11 +281,14 @@
 		from xxl_job_info t
 		join xxl_job_log t1 on t.id = t1.job_id
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
-			<if test="jobId==0 and jobGroup gt 0">
+			<if test="jobGroup gt 0">
 				AND t.job_group = #{jobGroup}
 			</if>
-			<if test="jobId gt 0">
-				AND t.id = #{jobId}
+			<if test="jobIds != null and jobIds.size > 0 ">
+				and t.id in
+				<foreach collection="jobIds" item="item" separator="," open="(" close=")">
+					#{item}
+				</foreach>
 			</if>
 			<if test="triggerTimeStart != null">
 				AND t1.trigger_time <![CDATA[ >= ]]> #{triggerTimeStart}
@@ -318,11 +321,14 @@
 				from xxl_job_info t
 				 join xxl_job_log t1 on t.id = t1.job_id
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
-			<if test="jobId==0 and jobGroup gt 0">
+			<if test="jobGroup gt 0">
 				AND t.job_group = #{jobGroup}
 			</if>
-			<if test="jobId gt 0">
-				AND t.id = #{jobId}
+			<if test="jobIds != null and jobIds.size > 0 ">
+				and t.id in
+				<foreach collection="jobIds" item="item" separator="," open="(" close=")">
+					#{item}
+				</foreach>
 			</if>
 			<if test="triggerTimeStart != null">
 				AND t1.trigger_time <![CDATA[ >= ]]> #{triggerTimeStart}
