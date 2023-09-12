@@ -8,13 +8,11 @@ import com.xxl.job.admin.core.util.I18nUtil;
 import com.xxl.job.admin.dao.XxlJobGroupDao;
 import com.xxl.job.admin.dao.XxlJobInfoDao;
 import com.xxl.job.admin.dao.XxlJobLogDao;
-import com.xxl.job.core.util.CollUtil;
 import com.xxl.job.core.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -92,7 +90,9 @@ public class JobStatisticController {
 
 		// page query
 		ArrayList<Integer> jobs = new ArrayList<>();
-		jobs.add(jobId);
+		if (jobId != 0) {
+			jobs.add(jobId);
+		}
 		int list_count = xxlJobLogDao.pageLogStatisticCount(start, length, jobGroup, jobs, triggerTimeStart, triggerTimeEnd);
 		List<XxlJobStatisticDTO> list = xxlJobLogDao.pageLogStatistic(start, length, jobGroup, jobs, triggerTimeStart, triggerTimeEnd, orderColumn, orderAsc);
 		// package result
