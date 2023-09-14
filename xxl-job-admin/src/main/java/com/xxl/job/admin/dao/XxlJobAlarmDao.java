@@ -16,6 +16,8 @@ public interface XxlJobAlarmDao {
 
     List<XxlJobAlarm> findByJobId(@Param("jobId") int jobId);
 
+    List<XxlJobAlarm> findByJobIds(@Param("jobIds") List<Integer> jobIds);
+
     void deleteByJobId(@Param("jobId") int jobId);
 
     void batchSave(@Param("dataList") List<XxlJobAlarm> dataList);

@@ -22,6 +22,15 @@
 		t.alarm_config
 	</sql>
 
+	<select id="findByJobIds" parameterType="java.util.HashMap" resultMap="XxlJobAlarm">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_job_alarm AS t
+		WHERE t.job_id in
+		<foreach collection="jobIds" item="item" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</select>
+
 	<select id="findByJobId" parameterType="java.util.HashMap" resultMap="XxlJobAlarm">
 		SELECT <include refid="Base_Column_List" />
 		FROM xxl_job_alarm AS t

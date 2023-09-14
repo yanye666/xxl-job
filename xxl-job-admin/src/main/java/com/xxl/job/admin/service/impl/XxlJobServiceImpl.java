@@ -1,6 +1,7 @@
 package com.xxl.job.admin.service.impl;
 
 import com.xxl.job.admin.core.cron.CronExpression;
+import com.xxl.job.admin.core.model.XxlJobAlarm;
 import com.xxl.job.admin.core.model.XxlJobGroup;
 import com.xxl.job.admin.core.model.XxlJobInfo;
 import com.xxl.job.admin.core.model.XxlJobLogReport;
@@ -24,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * core job action for xxl-job
@@ -54,10 +56,14 @@ public class XxlJobServiceImpl implements XxlJobService {
         List<XxlJobInfo> list = xxlJobInfoDao.pageList(start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
         int list_count = xxlJobInfoDao.pageListCount(start, length, jobGroup, triggerStatus, jobDesc, executorHandler, author);
 
-
-        for (XxlJobInfo xxlJobInfo : list) {
-            xxlJobInfo.setAlarmConfigList(xxlJobAlarmDao.findByJobId(xxlJobInfo.getId()));
+        if (!CollectionUtils.isEmpty(list)) {
+            List<Integer> jobIds = list.stream().map(XxlJobInfo::getId).collect(Collectors.toList());
+            Map<Integer, List<XxlJobAlarm>> map = xxlJobAlarmDao.findByJobIds(jobIds).stream().collect(Collectors.groupingBy(XxlJobAlarm::getJobId));
+            for (XxlJobInfo xxlJobInfo : list) {
+                xxlJobInfo.setAlarmConfigList(map.get(xxlJobInfo.getId()));
+            }
         }
+
         // package result
         Map<String, Object> maps = new HashMap<String, Object>();
         maps.put("recordsTotal", list_count);        // 总记录数
